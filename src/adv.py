@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from item import Item
 import time
 
 
@@ -36,6 +37,7 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
 #
 # Main
 #
@@ -59,18 +61,34 @@ directions={
     'd':  'east'
 }
 
+items={
+    'Sword': Item('Sword','A sharp sword that can be use to cut down the monster'),
+    'Shield': Item('Shield', 'If you don\'t like to attack the monster, you can defend yourself'),
+}
+
+# Generate some items in each rooms:
+
+room['outside'].add_items(items['Sword'])
+room['foyer'].add_items(items['Shield'])
 
 def start_game():
     name=input('Enter your name here: ')
     player_1=Player(name,room['outside'])
     print(f'''
-                Welcome to Treasure Hunting,{name}! 
-    Press w,s,d,a,q to go north,south,east,west or to q to quit''')
-    time.sleep(1)
+    Welcome to Treasure Hunting,{name}! Here is the rule :
+        Press w,s,d,a,q to go north,south,east,west or to q to quit
+        Once inside a room, you can pick up a drop an item by enter
+        take [item] or drop [item]''')
+    time.sleep(2)
     while True:
-        cmd=input(f'''
+        print(f'''
                     You\'re in {player_1.location.name}.
-        {player_1.location.description}\n ''')
+        {player_1.location.description}\n 
+        ''')
+        player_1.location.show_items()
+        action=input(f'Pick up or drop off item: ').split(' ')
+        player_1.action(action[0],items[action[1]])
+        cmd=input('If you are ready, let go to a different room, or press i to check your bag: ')
         if cmd in directions:
             if (player_1.location.n_to==None and cmd=='w' or 
             player_1.location.s_to==None and cmd=='s' or 
@@ -85,6 +103,10 @@ def start_game():
         elif cmd == 'q':
             print('Thank you for playing. Goodbye!!')
             quit()
+        elif cmd == 'i':
+            player_1.show_items()
+            time.sleep(2)
+            continue
         else:
             print('Please enter a valid direction')
             continue
