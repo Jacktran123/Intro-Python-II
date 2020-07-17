@@ -6,6 +6,8 @@ import time
 
 # Declare all the rooms
 
+
+
 room = {
     'outside':  Room("Outside Cave Entrance",
                      "North of you, the cave mount beckons"),
@@ -78,7 +80,7 @@ def start_game():
     Welcome to Treasure Hunting,{name}! Here is the rule :
         Press w,s,d,a,q to go north,south,east,west or to q to quit
         Once inside a room, you can pick up a drop an item by enter
-        take [item] or drop [item]''')
+        take [item] or drop [item] or skip to skip''')
     time.sleep(2)
     while True:
         print(f'''
@@ -87,7 +89,10 @@ def start_game():
         ''')
         player_1.location.show_items()
         action=input(f'Pick up or drop off item: ').split(' ')
-        player_1.action(action[0],items[action[1]])
+        if len(action) == 2:
+            player_1.action(action[0],items[action[1]])
+        else:
+            pass
         cmd=input('If you are ready, let go to a different room, or press i to check your bag: ')
         if cmd in directions:
             if (player_1.location.n_to==None and cmd=='w' or 
