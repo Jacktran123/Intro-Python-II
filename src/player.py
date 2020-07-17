@@ -33,6 +33,8 @@ class Player:
                 item.pick_up=False
                 item.is_taken(item)
                 self.items.remove(item)
+        elif action == 'Not':
+            pass
                 
     def show_items(self):
         for i in range(len(self.items)):

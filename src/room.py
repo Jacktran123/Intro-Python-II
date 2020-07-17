@@ -18,12 +18,14 @@ class Room:
         elif action=='drop':
             self.items.append(item)
     def show_items(self):
-        if len(self.items)==0:
-            print('The room is currently empty.You should move on')
-        else:
+        if self.items:
             print('Here is the available items in the room')
             for i in range(len(self.items)):
                 print(self.items[i].name +' -- '+self.items[i].description)
+        elif not self.items:
+            print('The room is currently empty.You should move on')
+        elif self.items and len(self.items)==0:
+            print('The room is currently empty.You should move on')
     
 
     
